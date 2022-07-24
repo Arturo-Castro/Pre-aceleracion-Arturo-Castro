@@ -19,6 +19,7 @@ builder.Services.AddDbContext<DisneyContext>(options =>
 });
 
 builder.Services.AddScoped<IUpdateCharacterUseCase, UpdateCharacterUseCase>();
+builder.Services.AddScoped<IUpdateShowUseCase, UpdateShowUseCase>();
 
 var app = builder.Build();
 

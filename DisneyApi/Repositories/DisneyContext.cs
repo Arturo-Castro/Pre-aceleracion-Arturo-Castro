@@ -26,6 +26,13 @@ namespace DisneyApi.Repositories
                 .FirstOrDefaultAsync(y => y.ID == id);
         }
 
+        public async Task<Show?> GetShowAndCharacter(int id)
+        {
+            return await Shows
+                .Include(x => x.Characters)
+                .FirstOrDefaultAsync(y => y.ID == id);
+        }
+
         public async Task<Character?> GetCharacter(int id)
         {   
             return await Characters.FirstOrDefaultAsync(y => y.ID == id);
@@ -46,9 +53,37 @@ namespace DisneyApi.Repositories
 
         }
 
+        public async Task<Show?> GetShow(int id)
+        {
+            return await Shows.FirstOrDefaultAsync(y => y.ID == id);
+        }
+
+        public async Task<bool> DeleteShow(int id)
+        {
+            Show? entity = await GetShow(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            Shows.Remove(entity);
+            SaveChanges();
+            return true;
+
+        }
+
         public async Task<bool> EditCharacter(Character character)
         {
             Characters.Update(character);
+            await SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditShow(Show show)
+        {
+            Shows.Update(show);
             await SaveChangesAsync();
 
             return true;
@@ -87,6 +122,41 @@ namespace DisneyApi.Repositories
             };
 
             return await GetCharacter(response.Entity.ID ?? throw new Exception("Could not save"));
+        }
+
+        public async Task<Show?> AddShow(CreateShowDto createShowDto)
+        {
+            Show show = new Show()
+            {
+                ID = null,
+                Image = createShowDto.Image,
+                Title = createShowDto.Title,
+                DateOfCreation = createShowDto.DateOfCreation,
+                Rate = createShowDto.Rate,
+                GenreID = createShowDto.GenreId,
+            };
+
+            var response = await Shows.AddAsync(show);
+            await SaveChangesAsync();
+
+            var showAndCharacters = await Shows.Include(p => p.Characters).FirstOrDefaultAsync(p => p.Title == createShowDto.Title);
+
+            foreach (string character in createShowDto.Characters)
+            {
+                Character character1 = new Character()
+                {
+                    Name = character,
+                };
+
+                await Characters.AddAsync(character1);
+                await SaveChangesAsync();
+
+                var singleCharacter = await Characters.FirstOrDefaultAsync(p => p.Name == character);
+                showAndCharacters.Characters.Add(singleCharacter);
+                await SaveChangesAsync();
+            };
+
+            return await GetShow(response.Entity.ID ?? throw new Exception("Could not save"));
         }
     }
 }

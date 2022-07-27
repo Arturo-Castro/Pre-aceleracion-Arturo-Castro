@@ -158,6 +158,46 @@ namespace DisneyApi.Repositories
             };
 
             return await GetShow(response.Entity.ID ?? throw new Exception("Could not save"));
-        }       
+        }
+        
+        public async Task<List<Character>> GetCharactersByName(string name)
+        {
+            return await Characters.Where(c => c.Name == name).ToListAsync();
+        }
+
+        public async Task<List<Character>> GetCharactersByAge(string age)
+        {
+            return await Characters.Where(c => c.Age == age).ToListAsync();
+        }
+
+        public async Task<List<Character>> GetCharactersByWeight(string weight)
+        {
+            return await Characters.Where(c => c.Weight == weight).ToListAsync();
+        }
+
+        public async Task<List<Show>> GetShowsByTitle(string title)
+        {
+            return await Shows.Where(m => m.Title == title).ToListAsync();
+        }
+
+        public async Task<List<Show>> GetShowsByGenreId(int genreId)
+        {
+            return await Shows.Where(m => m.GenreID == genreId).ToListAsync();
+        }
+
+        public async Task<List<Show>> GetShowsByOrder(string order)
+        {
+            var shows = new List<Show>();
+            if (order == "ASC")
+                shows = await (from c in Shows
+                                        orderby c.DateOfCreation ascending
+                                        select c).ToListAsync();
+            if (order == "DESC")
+                shows = await (from c in Shows
+                                        orderby c.DateOfCreation descending
+                                        select c).ToListAsync();
+
+            return shows;
+        }
     }
 }

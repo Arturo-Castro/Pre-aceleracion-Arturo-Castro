@@ -6,6 +6,7 @@ using DisneyApi.Repositories;
 using DisneyApi.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DisneyApi.Controllers
 {
@@ -23,6 +24,58 @@ namespace DisneyApi.Controllers
             _disneyContext = disneyContext;
             _mapper = mapper;
             _updateShowUseCase = updateShowUseCase;
+        }
+
+        [HttpGet("title")]
+        public async Task<ActionResult<List<ShowDto>>> GetShowsByTitle(string title)
+        {
+
+            var movies = await _disneyContext.GetShowsByTitle(title);
+            var result = new List<ShowDto>();
+
+            foreach (var movie in movies)
+            {
+                ShowDto showDto = _mapper.Map<ShowDto>(movie);
+
+                result.Add(showDto);
+            }
+
+            return Ok(result);
+        }
+       
+        [HttpGet("genre")]
+        public async Task<ActionResult<List<ShowDto>>> GetShowsByGenreId(int genreId)
+        {
+
+            var movies = await _disneyContext.GetShowsByGenreId(genreId);
+            var result = new List<ShowDto>();
+
+            foreach (var movie in movies)
+            {
+                ShowDto showDto = _mapper.Map<ShowDto>(movie);
+
+                result.Add(showDto);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("order")]
+        public async Task<ActionResult<List<ShowDto>>> GetShowsByOrder(string order)
+        {
+            order = order.ToUpper();
+
+            var movies = await _disneyContext.GetShowsByOrder(order);
+            var result = new List<ShowDto>();
+
+            foreach (var movie in movies)
+            {
+                ShowDto showDto = _mapper.Map<ShowDto>(movie);
+
+                result.Add(showDto);
+            }
+
+            return Ok(result);
         }
 
         [HttpGet()]

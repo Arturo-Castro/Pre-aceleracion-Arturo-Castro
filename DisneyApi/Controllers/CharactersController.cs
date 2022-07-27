@@ -5,7 +5,7 @@ using DisneyApi.Repositories;
 using DisneyApi.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DisneyApi.Controllers
 {
@@ -25,7 +25,65 @@ namespace DisneyApi.Controllers
             _updateCharacterUseCase = updateCharacterUseCase;
         }
 
-        
+        [HttpGet("name")]
+        public async Task<ActionResult<List<CharacterDto>>> GetCharactersByName(string name)
+        {
+            var characters = await _disneyContext.GetCharactersByName(name);
+            var result = new List<CharacterDto>();
+
+            foreach (var character in characters)
+            {
+                CharacterDto characterDto = _mapper.Map<CharacterDto>(character);
+                
+                result.Add(characterDto);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("age")]
+        public async Task<ActionResult<List<CharacterDto>>> GetCharactersByAge(string age)
+        {
+
+            var characters = await _disneyContext.GetCharactersByAge(age);
+            var result = new List<CharacterDto>();
+
+            foreach (var character in characters)
+            {
+                CharacterDto characterDto = _mapper.Map<CharacterDto>(character);
+
+                result.Add(characterDto);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("weight")]
+        public async Task<ActionResult<List<CharacterDto>>> GetCharactersByWeight(string weight)
+        {
+
+            var characters = await _disneyContext.GetCharactersByWeight(weight);
+            var result = new List<CharacterDto>();
+
+            foreach (var character in characters)
+            {
+                CharacterDto characterDto = _mapper.Map<CharacterDto>(character);
+
+                result.Add(characterDto);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("movies")]
+        public async Task<ActionResult<List<Character>>> GetCharactersByMovieId(int movieId)
+        {
+            var characters = await _disneyContext.Shows.Where(m => m.ID == movieId).Select(m => new { Title = m.Title, Characters = m.Characters })
+            .ToListAsync();
+
+            return Ok(characters);
+        }
+
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CharactersDto>))]
         public async Task<IActionResult> GetCharacters()

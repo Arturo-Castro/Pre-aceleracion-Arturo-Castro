@@ -17,7 +17,7 @@ namespace DisneyApi.Models
         [ForeignKey("Genre")]
         public int? GenreID { get; set; }
         public ICollection<Character?> Characters { get; set; }
-        //public ICollection<Character_Show> character_Shows { get; set; }
+
         public Genre? Genre { get; set; }
     }
 }

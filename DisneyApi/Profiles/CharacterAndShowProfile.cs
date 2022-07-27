@@ -12,7 +12,7 @@ namespace DisneyApi.Profiles
             CreateMap<Character, CharacterDto>();
             CreateMap<Character, CharactersDto>();
             CreateMap<Character, EditCharacterDto>();
-            CreateMap<Character, ShowsCharactersDto>();
+            CreateMap<Character, ShowsCharactersDto>();            
             CreateMap<CreateCharacterDto, Character>();
             CreateMap<Show, CharactersShows>();
             CreateMap<Show, EditShowDto>();

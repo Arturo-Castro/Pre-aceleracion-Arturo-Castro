@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using DisneyApi.Dtos.Character;
 using DisneyApi.Dtos.Show;
+using System.ComponentModel.DataAnnotations;
 
 namespace DisneyApi.Repositories
 {
@@ -157,6 +158,6 @@ namespace DisneyApi.Repositories
             };
 
             return await GetShow(response.Entity.ID ?? throw new Exception("Could not save"));
-        }
+        }       
     }
 }

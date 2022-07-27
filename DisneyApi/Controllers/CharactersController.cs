@@ -3,12 +3,15 @@ using DisneyApi.Dtos.Character;
 using DisneyApi.Models;
 using DisneyApi.Repositories;
 using DisneyApi.UseCases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace DisneyApi.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
+    [Authorize]
     public class CharactersController : Controller
     {
         private readonly DisneyContext _disneyContext;
@@ -22,6 +25,7 @@ namespace DisneyApi.Controllers
             _updateCharacterUseCase = updateCharacterUseCase;
         }
 
+        
         [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CharactersDto>))]
         public async Task<IActionResult> GetCharacters()

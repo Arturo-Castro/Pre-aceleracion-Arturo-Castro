@@ -4,12 +4,14 @@ using DisneyApi.Dtos.Show;
 using DisneyApi.Models;
 using DisneyApi.Repositories;
 using DisneyApi.UseCases;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DisneyApi.Controllers
 {
     [ApiController]
     [Route("Api/[controller]")]
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly DisneyContext _disneyContext;

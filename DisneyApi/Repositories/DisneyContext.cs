@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using DisneyApi.Dtos.Character;
 using DisneyApi.Dtos.Show;
-using System.ComponentModel.DataAnnotations;
 
 namespace DisneyApi.Repositories
 {
